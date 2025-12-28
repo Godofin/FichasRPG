@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FichasRPG - Crie suas Fichas</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Animação personalizada para o efeito de brilho (Shimmer) */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .animate-shimmer {
+            animation: shimmer 1.5s infinite;
+        }
+        
+        /* Fontes e ajustes gerais */
+        body {
+            font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        }
+        
+        ::selection {
+            background-color: #a855f7; /* Roxo */
+            color: white;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-zinc-950 text-zinc-100">
+
+    <!-- Navbar -->
+    <nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo -->
+                <div class="flex items-center gap-2">
+                    <div class="bg-gradient-to-br from-purple-600 to-indigo-600 p-2 rounded-lg">
+                        <!-- Ícone D20 Personalizado -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                            <path d="M2 17l10 5 10-5-10-5"></path>
+                            <path d="M2 7l10 5 10-5"></path>
+                            <path d="M12 22V12"></path>
+                        </svg>
+                    </div>
+                    <span class="font-bold text-xl tracking-tighter">Fichas<span class="text-purple-500">RPG</span></span>
+                </div>
+                
+                <!-- Desktop Menu -->
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#" class="hover:text-purple-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Início</a>
+                        <a href="#sistemas" class="hover:text-purple-400 transition-colors px-3 py-2 rounded-md text-sm font-medium">Sistemas</a>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex md:hidden">
+                    <button onclick="toggleMenu()" class="inline-flex items-center justify-center p-2 rounded-md text-zinc-400 hover:text-white hover:bg-zinc-800 focus:outline-none">
+                        <i data-lucide="menu" id="menu-icon" class="block h-6 w-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-zinc-900 border-b border-zinc-800">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#" class="text-zinc-300 hover:bg-zinc-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Início</a>
+                <a href="#sistemas" class="text-zinc-300 hover:bg-zinc-800 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Sistemas</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative pt-32 pb-12 sm:pt-40 sm:pb-16 lg:pb-24 overflow-hidden">
+        <!-- Background Image -->
+        <div class="absolute inset-0 z-0">
+            <img 
+                src="https://images.unsplash.com/photo-1614027164847-1b28cfe1df60?q=80&w=2670&auto=format&fit=crop" 
+                alt="Mesa de RPG" 
+                class="w-full h-full object-cover opacity-20"
+            />
+            <div class="absolute inset-0 bg-gradient-to-b from-zinc-950/80 via-zinc-950/50 to-zinc-950"></div>
+        </div>
+        
+        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl tracking-tight font-extrabold text-white sm:text-5xl md:text-6xl lg:text-7xl drop-shadow-2xl">
+                <span class="block">Crie suas Lendas.</span>
+                <span class="block text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-indigo-500">
+                    Eternize seus Agentes.
+                </span>
+            </h1>
+            <p class="mt-3 max-w-md mx-auto text-base text-zinc-300 sm:text-lg md:mt-5 md:text-xl md:max-w-3xl drop-shadow-lg">
+                A plataforma gratuita para gerenciar suas fichas de RPG. 
+                Simples, rápido e direto ao ponto. Role os dados e descubra o seu destino.
+            </p>
+        </div>
+    </div>
+
+    <!-- System Selector Section -->
+    <div id="sistemas" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 mb-20">
+        <h2 class="text-2xl font-bold mb-8 text-center text-zinc-300">Escolha seu Sistema</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            
+            <!-- Card: Ordem Paranormal -->
+            <div onclick="handleNavigation('ordem-paranormal')" class="group relative overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-zinc-600 transition-all duration-300 cursor-pointer hover:shadow-[0_0_30px_rgba(168,85,247,0.15)]">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                
+                <!-- Background Pattern -->
+                <div class="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity duration-500">
+                    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/black-scales.png')] mix-blend-overlay"></div>
+                    <div class="w-full h-full bg-zinc-900" style="background-image: radial-gradient(#3f3f46 1px, transparent 1px); background-size: 16px 16px;"></div>
+                </div>
+
+                <div class="relative z-20 p-8 h-full flex flex-col justify-between min-h-[320px]">
+                    <div>
+                        <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-4 group-hover:bg-purple-900/50 transition-colors border border-zinc-700 group-hover:border-purple-500/50">
+                            <i data-lucide="skull" class="w-6 h-6 text-zinc-300 group-hover:text-purple-400"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mb-2 group-hover:text-purple-400 transition-colors tracking-tighter" style="font-family: monospace;">
+                            ORDEM PARANORMAL
+                        </h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            O Outro Lado quer entrar. Crie seu agente, escolha sua classe e trilha, e prepare-se para investigar o impossível. Não perca sua sanidade.
+                        </p>
+                        
+                        <div class="flex gap-2 mt-4 flex-wrap">
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">Investigação</span>
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">Terror</span>
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">D20 System</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center text-purple-400 font-medium group-hover:translate-x-2 transition-transform">
+                        Criar Ficha de Agente <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+                
+                <!-- Glitch Effect Bar -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-purple-500 to-transparent transform -translate-x-full group-hover:animate-shimmer"></div>
+            </div>
+
+            <!-- Card: Dungeons & Dragons -->
+            <div onclick="handleNavigation('dnd-5e')" class="group relative overflow-hidden rounded-2xl bg-zinc-900 border border-zinc-800 hover:border-amber-700 transition-all duration-300 cursor-pointer hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]">
+                <div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/90 z-10"></div>
+                
+                <!-- Background Texture -->
+                <div class="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-500 bg-amber-900 mix-blend-overlay"></div>
+
+                <div class="relative z-20 p-8 h-full flex flex-col justify-between min-h-[320px]">
+                    <div>
+                        <div class="w-12 h-12 rounded-full bg-zinc-800 flex items-center justify-center mb-4 group-hover:bg-amber-900/30 transition-colors border border-zinc-700 group-hover:border-amber-600/50">
+                            <i data-lucide="sword" class="w-6 h-6 text-zinc-300 group-hover:text-amber-500"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-white mb-2 group-hover:text-amber-500 transition-colors tracking-wide" style="font-family: serif;">
+                            DUNGEONS & DRAGONS
+                        </h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            A maior aventura de todas. Crie heróis lendários, de guerreiros destemidos a magos poderosos. Role iniciativa e enfrente seu destino.
+                        </p>
+                        
+                        <div class="flex gap-2 mt-4 flex-wrap">
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">Fantasia</span>
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">Aventura</span>
+                            <span class="px-2 py-1 bg-zinc-800/50 border border-zinc-700 rounded text-xs text-zinc-400">5ª Edição</span>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex items-center text-amber-500 font-medium group-hover:translate-x-2 transition-transform">
+                        Criar Ficha de Personagem <i data-lucide="chevron-right" class="w-4 h-4 ml-1"></i>
+                    </div>
+                </div>
+
+                <!-- Shine Effect Bar -->
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent transform -translate-x-full group-hover:animate-shimmer"></div>
+            </div>
+
+        </div>
+
+        <div class="mt-12 text-center">
+            <p class="text-zinc-500 text-sm">Mais sistemas (Tormenta20, Pathfinder, Call of Cthulhu) em breve.</p>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="bg-zinc-900 py-16 border-t border-zinc-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                <!-- Feature 1 -->
+                <div class="p-6 bg-zinc-950/50 rounded-xl border border-zinc-800">
+                    <div class="mx-auto w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-purple-500 mb-4">
+                        <i data-lucide="scroll" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">100% Digital</h3>
+                    <p class="text-zinc-400 text-sm">Esqueça o papel e a borracha. Edite seus atributos e inventário em tempo real durante a sessão.</p>
+                </div>
+                <!-- Feature 2 -->
+                <div class="p-6 bg-zinc-950/50 rounded-xl border border-zinc-800">
+                    <div class="mx-auto w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-indigo-500 mb-4">
+                        <i data-lucide="dna" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Customizável</h3>
+                    <p class="text-zinc-400 text-sm">Crie homebrews, adicione rituais personalizados ou itens mágicos únicos com facilidade.</p>
+                </div>
+                <!-- Feature 3 -->
+                <div class="p-6 bg-zinc-950/50 rounded-xl border border-zinc-800">
+                    <div class="mx-auto w-12 h-12 bg-zinc-800 rounded-lg flex items-center justify-center text-amber-500 mb-4">
+                        <i data-lucide="shield" class="w-6 h-6"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">Seguro</h3>
+                    <p class="text-zinc-400 text-sm">Suas fichas ficam salvas na nuvem. Nunca mais perca seu personagem nível 20.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-zinc-950 py-8 border-t border-zinc-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                 <!-- Ícone D20 Personalizado (Pequeno) -->
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-zinc-500">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5-10-5"></path>
+                    <path d="M2 7l10 5 10-5"></path>
+                    <path d="M12 22V12"></path>
+                </svg>
+                <span class="text-zinc-500 font-semibold text-sm">FichasRPG © 2024</span>
+            </div>
+            <div class="flex space-x-6 text-sm text-zinc-500">
+                <a href="#" class="hover:text-white transition-colors">Termos</a>
+                <a href="#" class="hover:text-white transition-colors">Privacidade</a>
+                <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                <a href="#" class="hover:text-white transition-colors">Discord</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Inicializa os ícones Lucide
+        lucide.createIcons();
+
+        // Lógica do Menu Mobile
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            
+            if (menu.classList.contains('hidden')) {
+                menu.classList.remove('hidden');
+            } else {
+                menu.classList.add('hidden');
+            }
+        }
+
+        // Lógica de Navegação
+        function handleNavigation(system) {
+            console.log(`Navegando para: ${system}`);
+            // Exemplo de redirecionamento:
+            // window.location.href = `/fichas/${system}.html`;
+            
+            // Apenas para demo visual
+            alert(`Você escolheu: ${system === 'ordem-paranormal' ? 'Ordem Paranormal' : 'Dungeons & Dragons'}`);
+        }
+    </script>
+</body>
+</html>
