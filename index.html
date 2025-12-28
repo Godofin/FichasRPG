@@ -262,12 +262,13 @@
 
         // Lógica de Navegação
         function handleNavigation(system) {
-            console.log(`Navegando para: ${system}`);
-            // Exemplo de redirecionamento:
-            // window.location.href = `/fichas/${system}.html`;
-            
-            // Apenas para demo visual
-            alert(`Você escolheu: ${system === 'ordem-paranormal' ? 'Ordem Paranormal' : 'Dungeons & Dragons'}`);
+            if (system === 'ordem-paranormal') {
+                // Redireciona para o arquivo order.html no mesmo diretório
+                window.location.href = 'order.html';
+            } else {
+                // Mantém o alerta para sistemas que ainda não têm página
+                alert(`Você escolheu: Dungeons & Dragons (Em breve)`);
+            }
         }
     </script>
 </body>
